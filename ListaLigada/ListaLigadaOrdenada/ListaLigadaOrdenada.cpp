@@ -1,7 +1,6 @@
 #include <iostream>
 using namespace std;
 
-// definicao de tipo
 struct NO {
 	int valor;
 	NO* prox;
@@ -9,7 +8,6 @@ struct NO {
 
 NO* primeiro = NULL;
 
-// headers
 void menu();
 void inicializar();
 void exibirQuantidadeElementos();
@@ -18,7 +16,6 @@ void inserirElemento();
 void excluirElemento();
 void buscarElemento();
 NO* posicaoElemento(int numero);
-//--------------------------
 
 
 int main()
@@ -30,7 +27,7 @@ void menu()
 {
 	int op = 0;
 	while (op != 7) {
-		system("cls"); // somente no windows
+		system("cls"); 
 		cout << "Menu Lista Ligada";
 		cout << endl << endl;
 		cout << "1 - Inicializar Lista \n";
@@ -64,14 +61,12 @@ void menu()
 			break;
 		}
 
-		system("pause"); // somente no windows
+		system("pause"); 
 	}
 }
 
 void inicializar()
 {
-	// se a lista já possuir elementos
-// libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
 		NO* paraExcluir = aux;
@@ -114,7 +109,6 @@ void exibirElementos()
 
 void inserirElemento()
 {
-	// aloca memoria dinamicamente para o novo elemento
 	NO* novo = (NO*)malloc(sizeof(NO));
 	if (novo == NULL)
 	{
@@ -125,29 +119,80 @@ void inserirElemento()
 	cin >> novo->valor;
 	novo->prox = NULL;
 
-	if (primeiro == NULL)
-	{
+	if (primeiro == NULL) {
 		primeiro = novo;
 	}
-	else
-	{
-		// procura o final da lista
+	else if (primeiro->valor > novo->valor) { 
+		NO* aux = primeiro;
+		primeiro = novo;
+		novo->prox = aux;
+	}
+	
+	else { 
 		NO* aux = primeiro;
 		while (aux->prox != NULL) {
+			if (aux->prox->valor > novo->valor) {
+				break;
+			}
 			aux = aux->prox;
 		}
+		novo->prox = aux->prox;
 		aux->prox = novo;
 	}
 }
 
-void excluirElemento()
+void excluirElemento() 
 {
-
+	NO* deletar = (NO*)malloc(sizeof(NO));
+	cout << "Digite o numero a ser excluido:" << endl;
+	cin >> deletar->valor;
+	deletar->prox = NULL;
+	if (primeiro == NULL) {
+		cout << "Lista vazia";
+	}
+	else if (deletar->valor == primeiro->valor) {
+		primeiro = primeiro->prox; 
+		free(deletar); 
+	}
+	else { 
+		NO* aux = primeiro;
+		while (aux->prox != NULL) {
+			if (aux->prox->valor == deletar->valor) {
+				aux->prox = aux->prox->prox;
+				free(deletar);
+				break;
+			}
+			aux = aux->prox;
+		}
+	}
 }
 
-void buscarElemento()
-{
+void buscarElemento() {
+	NO* busca = (NO*)malloc(sizeof(NO)); 
+	cout << "Busque um numero" << endl;
+	cin >> busca->valor;
+	busca->prox = NULL;
 
+	if (primeiro == NULL) { 
+		cout << "Lista vazia!" << endl;
+	}
+	else {
+		NO* aux = primeiro;
+		int cont = 0;
+		while (aux != NULL) {
+			if (aux->valor == busca->valor) { 
+				cont++;
+			}
+			aux = aux->prox; 
+		}
+		if (cont > 0) { 
+			cout << "Numero encontrado " << cont << endl;
+		}
+		else {
+			cout << "Numero nao encontrado." << endl;
+		}
+	}
+
+	free(busca); 
 }
-
 
